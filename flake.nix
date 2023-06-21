@@ -6,15 +6,29 @@
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
       # https://nixos.wiki/wiki/Nix_Cookbook#Creating_shell_scripts
-      mynvim2 = pkgs.writeShellScriptBin "mynvim" ''
-        # Call hello with a traditional greeting
-        exec ${pkgs.neovim}/bin/nvim -u ./vimrc
-      '';
-    in {
-      apps.${system}.default = {
+      mynvim = vimrc:
+        pkgs.writeShellScriptBin "mynvim" ''
+          # Call hello with a traditional greeting
+          exec ${pkgs.neovim}/bin/nvim -u ${vimrc}
+        '';
+      app = vimrc: {
         type = "app";
-        program = "${mynvim2}/bin/mynvim";
         description = "custom vimrc";
+        program = "${mynvim vimrc}/bin/mynvim";
+      };
+
+    in {
+      devShells.${system}.default = pkgs.mkShell {
+        buildInputs = with pkgs; [
+          luajitPackages.lua-lsp
+          nodePackages.vim-language-server
+        ];
+      };
+
+      apps.${system} = {
+        ex01 = app ./01vimrc;
+        ex03 = app ./03vimrc;
+        ex04 = app ./04vimrc;
       };
     };
 }
