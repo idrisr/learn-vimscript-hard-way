@@ -1,0 +1,8 @@
+return person.get_pets(type="cat", fluffy_only=True)
+
+print foo(bar)
+
+def count(i):
+    i += 1
+    print i
+    return foo
