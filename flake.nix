@@ -1,19 +1,18 @@
 {
   inputs.nixkpgs.url = "nixpkgs";
-  description = "messing around with vim";
+  description = "messing around with vimscript";
   outputs = { self, nixpkgs, ... }:
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
-      # https://nixos.wiki/wiki/Nix_Cookbook#Creating_shell_scripts
       mynvim = vimrc:
         pkgs.writeShellScriptBin "mynvim" ''
-          # Call hello with a traditional greeting
-          exec ${pkgs.neovim}/bin/nvim -u ${vimrc} $@
+          # call neovim with custom config
+          exec ${pkgs.neovim}/bin/nvim -u ${vimrc} "$@"
         '';
       app = vimrc: {
         type = "app";
-        description = "custom vimrc";
+        description = "custom vimrc ${vimrc}";
         program = "${mynvim vimrc}/bin/mynvim";
       };
 
@@ -34,6 +33,15 @@
         ex09 = app ./09vimrc;
         ex13 = app ./13vimrc;
         ex15 = app ./15vimrc;
+        ex16 = app ./16vimrc;
+        ex19 = app ./19vimrc;
+        ex21 = app ./21vimrc;
+        ex22 = app ./22vimrc;
+        ex23 = app ./23vimrc;
+        ex24 = app ./24vimrc;
+        ex25 = app ./25vimrc;
+        ex26 = app ./26vimrc;
+        ex27 = app ./27vimrc;
       };
     };
 }
