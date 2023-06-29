@@ -1,0 +1,65 @@
+diff --git a/Makefile b/Makefile
+index 5b7a22e..7d3fb5e 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1,7 +1,7 @@
+ # posix (linux, bsd, osx, solaris) + mingw with gcc/clang only
+ .SUFFIXES: .y .c .i .o .opic .textile .html
+ .PHONY: all default bins libs pn static usage config clean doc rebuild check test bench tarball dist \
+-        examples release install grammar doxygen website testable
++        examples release install grammar doxygen website testable core/version.h
+ .NOTPARALLEL: test
+ 
+ SRC = core/asm.c core/ast.c core/compile.c core/contrib.c core/gc.c core/internal.c core/lick.c core/mt19937ar.c core/number.c core/objmodel.c core/primitive.c core/string.c core/syntax.c core/table.c core/vm.c
+@@ -77,9 +77,9 @@ DOCHTML = ${DOC:.textile=.html}
+ LIBPNA_AWAY = if [ -f lib/libpotion.a ]; then mv lib/libpotion.a lib/libpotion.a.tmp; fi
+ LIBPNA_BACK = if [ -f lib/libpotion.a.tmp ]; then mv lib/libpotion.a.tmp lib/libpotion.a; fi
+ 
+-CAT  = /bin/cat
+-ECHO ?= /bin/echo
+-MV   = /bin/mv
++CAT  = $(shell command -v cat)
++ECHO ?= $(shell command -v echo)
++MV   = $(shell command -v mv)
+ SED  = sed
+ EXPR = expr
+ GREG = bin/greg${EXE}
+@@ -151,8 +151,8 @@ config.inc: tools/config.sh config.mak
+ core/config.h: config.inc core/version.h tools/config.sh config.mak
+ 	@${MAKE} -s -f config.mak $@
+ 
+-core/version.h: config.mak $(shell git show-ref HEAD | ${SED} "s,^.* ,.git/,g")
+-	@${MAKE} -s -f config.mak $@
++core/version.h:
++	echo phony
+ 
+ grammar: tools/greg.y
+ 	touch tools/greg.y
+@@ -310,27 +310,6 @@ CROSSHOST =
+ PWD = $(shell pwd)
+ endif
+ 
+-3rd/libuv/Makefile: 3rd/libuv/Makefile.am
+-	@${ECHO} AUTOGEN $@
+-	@${PATCH_PHLPAPI2}
+-	cd 3rd/libuv && ./autogen.sh
+-	-grep "libuv 1." 3rd/libuv/configure && sed -i -e's,libuv 1.,libuv-1.,' 3rd/libuv/configure
+-	cd 3rd/libuv && CC="${CC}" ./configure --enable-shared --prefix="${PWD}" \
+-	  "${CROSSHOST}"
+-
+-lib/libuv.a: config.inc 3rd/libuv/Makefile
+-	@${ECHO} MAKE $@
+-	+${MAKE} -s -C 3rd/libuv libuv.la
+-	cp 3rd/libuv/.libs/libuv.a lib/
+-	@touch $@
+-
+-# default: shared
+-${LIBUV}: config.inc 3rd/libuv/Makefile
+-	@${ECHO} MAKE $@
+-	+${MAKE} -s -C 3rd/libuv libuv.la
+-	rsync -a 3rd/libuv/.libs/libuv*${DLL}* lib/ || cp 3rd/libuv/.libs/libuv.a lib/
+-	@touch $@
+-
+ # DYNLIBS
+ lib/potion/readline${LOADEXT}: core/config.h core/potion.h \
+   lib/readline/Makefile lib/readline/linenoise.c \
