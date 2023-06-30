@@ -1,10 +1,10 @@
 factorial = (n):
     total = 1
     n to 1 (i):
+        # multiply the running total
         total *= i.
     total.
 
-#comment
 10 times(i):
     i string print
     '! is: ' print
