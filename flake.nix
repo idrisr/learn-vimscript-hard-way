@@ -139,6 +139,7 @@
           program = let package = nvim-plugin ./vimrc/44vimrc.vim;
           in "${package}/bin/nvim";
         };
+        ex99 = app "99vimrc.vim";
       };
     };
 }
