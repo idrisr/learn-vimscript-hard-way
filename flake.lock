@@ -14,6 +14,20 @@
         "type": "indirect"
       }
     },
+    "nixkpgs_2": {
+      "locked": {
+        "lastModified": 1689047559,
+        "narHash": "sha256-s3xILs1+Hh4z8zudSnbOz5xM7ltzpg4WZ952ea7OlZ0=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "a187ec43efbeec0f3be6f9d13a6836fcbb914a9d",
+        "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "type": "indirect"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1687274257,
@@ -28,10 +42,29 @@
         "type": "indirect"
       }
     },
+    "potion": {
+      "inputs": {
+        "nixkpgs": "nixkpgs_2",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1,
+        "narHash": "sha256-O9RrS86Is5N7OYMYaZ1lpH64JO/a8XRyyy52J2QSMcg=",
+        "path": "/nix/store/z32bd8k8bjixwgir4vlaaslbjxx2gisw-source/potion",
+        "type": "path"
+      },
+      "original": {
+        "path": "/nix/store/z32bd8k8bjixwgir4vlaaslbjxx2gisw-source/potion",
+        "type": "path"
+      }
+    },
     "root": {
       "inputs": {
         "nixkpgs": "nixkpgs",
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs",
+        "potion": "potion"
       }
     }
   },
